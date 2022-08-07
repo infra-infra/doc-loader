@@ -1,5 +1,5 @@
 import path from "path";
-import fs from "fs-extra";
+import fs from "fs";
 import fm from "front-matter";
 import prettier from "prettier";
 import { transform } from "@babel/core";

@@ -1,6 +1,6 @@
 // Custom markdown loader
 import path from 'path';
-import fs from 'fs-extra';
+import fs from 'fs';
 import fm from 'front-matter';
 import loaderUtils from 'loader-utils';
 import traverse from '@babel/traverse';
