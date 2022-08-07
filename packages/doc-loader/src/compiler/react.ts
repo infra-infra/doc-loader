@@ -9,6 +9,7 @@ import {
 } from "@babel/types";
 
 import babelParse from "../parser/babel";
+import { nanoid } from "nanoid";
 
 const cache = new LRU<
   string,
@@ -22,8 +23,7 @@ const cache = new LRU<
   maxAge: 1000 * 60 * 10,
 });
 
-export async function compileReact(code) {
-  const { nanoid } = await import("nanoid");
+export function compileReact(code) {
   const id = nanoid();
   const ast = babelParse(code);
 

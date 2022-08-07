@@ -19,7 +19,7 @@ importers:
       loader-utils: ^1.2.3
       lru-cache: ^7.13.2
       marked: ^4.0.18
-      nanoid: ^4.0.0
+      nanoid: ^3.1.22
       path: ^0.12.7
       prettier: ^2.7.1
       prismjs: ^1.28.0
@@ -38,7 +38,7 @@ importers:
       loader-utils: 1.4.0
       lru-cache: 7.13.2
       marked: 4.0.18
-      nanoid: 4.0.0
+      nanoid: 3.3.4
       path: 0.12.7
       prettier: 2.7.1
       prismjs: 1.28.0
@@ -2177,13 +2177,6 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-    dev: true
-
-  /nanoid/4.0.0:
-    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
-    engines: {node: ^14 || ^16 || >=18}
-    hasBin: true
-    dev: false
 
   /node-fetch-npm/2.0.4:
     resolution: {integrity: sha512-iOuIQDWDyjhv9qSDrj9aq/klt6F9z1p2otB3AV7v3zBDcL/x+OfGsvGQZZCcMZbUf4Ujw1xGNQkjvGnVT22cKg==}

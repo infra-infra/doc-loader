@@ -4,12 +4,11 @@ import { compileReact } from "../compiler/react";
 
 const renderer = new marked.Renderer();
 
-renderer.code = async function (code, infostring, escaped) {
+renderer.code = function (code, infostring, escaped) {
   const lang = (infostring || "").match(/\S*/)[0];
 
   if (lang === "js:react") {
-    const { holder } = await compileReact(code);
-    return holder;
+    return compileReact(code).holder;
   }
 
   if (this.options.highlight) {
