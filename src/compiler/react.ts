@@ -1,20 +1,29 @@
 // Use React component in markdown
 import LRU from "lru-cache";
 import traverse from "@babel/traverse";
-import {ExpressionStatement, ImportDeclaration, JSXIdentifier, JSXText} from "@babel/types";
-import { nanoid } from "nanoid";
+import {
+  ExpressionStatement,
+  ImportDeclaration,
+  JSXIdentifier,
+  JSXText,
+} from "@babel/types";
 
 import babelParse from "../parser/babel";
 
 const cache = new LRU<
   string,
-  { imports: ImportDeclaration[]; expressions: ExpressionStatement[]; touched?: boolean }
+  {
+    imports: ImportDeclaration[];
+    expressions: ExpressionStatement[];
+    touched?: boolean;
+  }
 >({
   max: 0,
   maxAge: 1000 * 60 * 10,
 });
 
-export function compileReact(code) {
+export async function compileReact(code) {
+  const { nanoid } = await import("nanoid");
   const id = nanoid();
   const ast = babelParse(code);
 
