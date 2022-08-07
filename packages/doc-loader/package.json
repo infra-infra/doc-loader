@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/cocoplums/dekopon-cli#readme",
   "dependencies": {
+    "react-docgen-typescript": "^2.2.2",
     "@babel/core": "^7.18.10",
     "@babel/generator": "^7.18.12",
     "@babel/parser": "^7.18.11",

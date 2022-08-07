@@ -2,6 +2,9 @@ lockfileVersion: 5.4
 
 importers:
 
+  .:
+    specifiers: {}
+
   packages/doc-loader:
     specifiers:
       '@babel/core': ^7.18.10
@@ -20,6 +23,7 @@ importers:
       path: ^0.12.7
       prettier: ^2.7.1
       prismjs: ^1.28.0
+      react-docgen-typescript: ^2.2.2
       typescript: ^4.7.4
     dependencies:
       '@babel/core': 7.18.10
@@ -38,6 +42,7 @@ importers:
       path: 0.12.7
       prettier: 2.7.1
       prismjs: 1.28.0
+      react-docgen-typescript: 2.2.2_typescript@4.7.4
       typescript: 4.7.4
 
   packages/site-components:
@@ -10792,6 +10797,14 @@ packages:
     dependencies:
       typescript: 4.6.4
     dev: true
+
+  /react-docgen-typescript/2.2.2_typescript@4.7.4:
+    resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
+    peerDependencies:
+      typescript: '>= 4.3.x'
+    dependencies:
+      typescript: 4.7.4
+    dev: false
 
   /react-dom/16.14.0_react@16.14.0:
     resolution: {integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==}

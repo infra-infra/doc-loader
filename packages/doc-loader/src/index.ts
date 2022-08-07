@@ -28,6 +28,7 @@ import { processReactAst } from './compiler/react';
 import { htmlToJsx, htmlToJsxWithHelmet } from './jsx';
 import parseHeaderFromMarkdown from './utils/parseHeaderFromMarkdown';
 import { isObject } from './utils/is';
+import getProps from "./utils/getProps";
 
 export interface ArcoMarkdownLoaderOptions {
   preprocess?: (string) => string;
@@ -118,6 +119,9 @@ function loaderForArcoComponentDoc(
         const expressionStatement = babelParse('<Component />').program.body[0] as ExpressionStatement
         const element = expressionStatement.expression
         _path.insertBefore(element);
+        const propsExpressionStatement = babelParse(getProps(this.context)).program.body[0] as ExpressionStatement
+        const propsElement = propsExpressionStatement.expression
+        _path.insertAfter(propsElement)
         _path.stop();
       }
     },
