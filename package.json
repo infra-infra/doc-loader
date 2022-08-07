@@ -1,0 +1,50 @@
+{
+  "name": "dekopon-cli",
+  "version": "0.0.1",
+  "description": "不知火组件库cli",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc",
+    "clean": "rm -rf lib",
+    "test": "pnpm build && jest",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cocoplums/dekopon-cli.git"
+  },
+  "keywords": [
+    "cli",
+    "dekopon"
+  ],
+  "author": "cocoplums",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cocoplums/dekopon-cli/issues"
+  },
+  "homepage": "https://github.com/cocoplums/dekopon-cli#readme",
+  "devDependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/generator": "^7.18.12",
+    "@babel/parser": "^7.18.11",
+    "@babel/template": "^7.18.10",
+    "@babel/traverse": "^7.18.11",
+    "@babel/types": "^7.18.10",
+    "@types/node": "^18.6.4",
+    "front-matter": "^4.0.2",
+    "fs-extra": "^10.1.0",
+    "loader-utils": "^3.2.0",
+    "lru-cache": "^7.13.2",
+    "marked": "^4.0.18",
+    "nanoid": "^4.0.0",
+    "path": "^0.12.7",
+    "prettier": "^2.7.1",
+    "prismjs": "^1.28.0",
+    "typescript": "^4.7.4"
+  }
+}
