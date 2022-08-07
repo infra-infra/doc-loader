@@ -1,5 +1,5 @@
 {
-  "name": "dekopon-cli",
+  "name": "@dekopon/cli",
   "version": "0.0.1",
   "description": "不知火组件库cli",
   "main": "lib/index.js",
