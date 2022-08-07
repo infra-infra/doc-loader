@@ -25,8 +25,7 @@ import babelParse from './parser/babel';
 import compilerDemo from './compiler/demo';
 import compilerChangelog from './compiler/changelog';
 import { processReactAst } from './compiler/react';
-import { htmlToJsx, htmlToJsxWithHelmet, htmlToUsageJsx } from './jsx';
-import { getDataFromChangelog } from './utils/getDataFromChangelog';
+import { htmlToJsx, htmlToJsxWithHelmet } from './jsx';
 import parseHeaderFromMarkdown from './utils/parseHeaderFromMarkdown';
 import { isObject } from './utils/is';
 
@@ -79,34 +78,9 @@ function loaderForArcoComponentDoc(
       console.error(err);
     }
   }
-  const usagePath = path.resolve(this.context, `usage/index.${lang}.md`);
-  const usageExist = fs.existsSync(usagePath);
-
-  let usageAst;
-  if (usageExist) {
-    const usageMd = fs.readFileSync(usagePath, 'utf8');
-    this.addDependency(usagePath);
-    const usageJsx = htmlToUsageJsx(marked(usageMd));
-    usageAst = babelParse(usageJsx).program.body;
-  }
-
-  const usageCheck = babelParse('<span style={isUsage ? { display: "none" }: {}} />');
-  const usageCheckAttribute = (usageCheck.program.body[0] as any).expression.openingElement
-    .attributes[0];
-
-  const changelogPath = path.resolve(this.context, `./__changelog__/index.${lang}.md`);
-  const changelogExist = fs.existsSync(changelogPath);
-  let changelog = [];
-  if (changelogExist) {
-    const fileContent = fs.readFileSync(changelogPath, 'utf8');
-    changelog = getDataFromChangelog(fileContent);
-    this.addDependency(changelogPath);
-  }
 
   const commonImports = babelParse(`
-    import { CodeBlockWrapper, CellCode, CellDemo, CellDescription, Browser, Changelog } from "arco-doc-site-components";
-    import { Radio as NavRadio, Button as ChangelogBtn, Drawer as ChangelogDrawer } from "@arco-design/web-react";
-    const changelog = ${JSON.stringify(changelog)};
+    import { CodeBlockWrapper, CellCode, CellDemo, CellDescription, Browser } from "@dekopon/site";
   `).program.body;
 
   traverse(markdownAst, {
@@ -126,7 +100,6 @@ function loaderForArcoComponentDoc(
         const nextSpan = jsxElement(
           jsxOpeningElement(jsxIdentifier('span'), [
             markdownClassAttributeApiContainer,
-            usageCheckAttribute,
           ]),
           jsxClosingElement(jsxIdentifier('span')),
           nexts.map((prev) => prev.node as JSXElement)
@@ -142,50 +115,7 @@ function loaderForArcoComponentDoc(
         _path.insertBefore([prevSpan]);
         _path.insertAfter([nextSpan]);
 
-        const ButtonJSX = `<ChangelogBtn
-            aria-label="Changelog"
-            size="large"
-            className="changelog-btn"
-            onClick={() => setShowChangelog(true)}
-          >
-            {lang === 'en-US' ? 'Changelog' : '更新记录'}
-          </ChangelogBtn>`;
-        const DrawerJSX = `<ChangelogDrawer
-            title="发版记录"
-            visible={showChangelog}
-            onOk={() => setShowChangelog(false)}
-            onCancel={() => setShowChangelog(false)}
-            width={800}
-          >
-            <Changelog changelog={changelog}/>
-          </ChangelogDrawer>`;
-
-        const componentJsx = usageExist
-          ? `
-              <>
-              <div className="ac-toolbar">
-                <NavRadio.Group
-                  options={[
-                    { label: lang === 'en-US' ? 'Component' : '组件', value: 'component' },
-                    { label: lang === 'en-US' ? 'Usage' : '用法', value: 'usage' }
-                  ]}
-                  onChange={(value) => setIsUsage(value === 'usage')}
-                  type="button"
-                  value={isUsage ? 'usage' : 'component'}
-                  size="large"
-                />
-                ${ButtonJSX}
-              </div>
-                
-                <Usage style={!isUsage ? { display: 'none' } : {}} />
-                <Component style={isUsage ? { display: 'none' } : {}} />
-                ${DrawerJSX}
-              </>
-            `
-          : `<>
-            <div className="ac-toolbar">${ButtonJSX}</div>
-            <Component />${DrawerJSX}</>`;
-        const expressionStatement = babelParse(componentJsx).program.body[0] as ExpressionStatement
+        const expressionStatement = babelParse('<Component />').program.body[0] as ExpressionStatement
         const element = expressionStatement.expression
         _path.insertBefore(element);
         _path.stop();
@@ -195,10 +125,6 @@ function loaderForArcoComponentDoc(
 
   traverse(markdownAst, {
     FunctionDeclaration: (_path) => {
-      const functionName = _path.node.id && _path.node.id.name;
-      if (usageAst && !functionName) {
-        _path.insertBefore(usageAst);
-      }
       if (ast) {
         _path.insertBefore(commonImports);
         _path.insertBefore(ast);
