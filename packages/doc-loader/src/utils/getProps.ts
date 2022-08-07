@@ -53,7 +53,7 @@ function getProps(context) {
     const componentInfo = parse(
         path.resolve(context, `index.tsx`)
     );
-    return `<div class="markdown-body api-container">
+    return `<div className="markdown-body api-container">
 ${marked(commentToMarkDown(componentInfo))}
 </div>`
 }
