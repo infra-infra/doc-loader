@@ -119,6 +119,7 @@ function loaderForArcoComponentDoc(
         const expressionStatement = babelParse('<Component />').program.body[0] as ExpressionStatement
         const element = expressionStatement.expression
         _path.insertBefore(element);
+        this.addDependency(path.resolve(this.context, `index.tsx`));
         const propsExpressionStatement = babelParse(getProps(this.context)).program.body[0] as ExpressionStatement
         const propsElement = propsExpressionStatement.expression
         _path.insertAfter(propsElement)
