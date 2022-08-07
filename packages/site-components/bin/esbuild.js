@@ -7,16 +7,16 @@ const esbuild = require('esbuild');
 
 async function handleAssets() {
   await fs.copyFile(
-    path.join(__dirname, '../components/styles/theme.scss'),
-    path.join(__dirname, '../dist/theme.scss'),
+    path.join(__dirname, '../components/style/highlight.scss'),
+    path.join(__dirname, '../dist/highlight.scss'),
   );
   await fs.copyFile(
-    path.join(__dirname, '../dist/styles/index.css'),
+    path.join(__dirname, '../dist/style/index.css'),
     path.join(__dirname, '../dist/bundle.min.css'),
   );
-  await fs.rm(path.join(__dirname, '../dist/styles/index.css'));
-  await fs.rm(path.join(__dirname, '../dist/styles/index.js'));
-  await fs.rmdir(path.join(__dirname, '../dist/styles'));
+  await fs.rm(path.join(__dirname, '../dist/style/index.css'));
+  await fs.rm(path.join(__dirname, '../dist/style/index.js'));
+  await fs.rmdir(path.join(__dirname, '../dist/style'));
 }
 
 
@@ -25,7 +25,7 @@ function buildEsm() {
         .build({
             entryPoints: [
                 path.join(__dirname, '../components/index.ts'),
-                path.join(__dirname, '../components/styles/index.ts'),
+                path.join(__dirname, '../components/style/index.ts'),
             ],
             bundle: true,
             outdir: path.join(__dirname, '../dist'),
@@ -52,27 +52,4 @@ function buildEsm() {
     }).catch(() => process.exit(1));
 }
 
-function buildCjs() {
-   esbuild
-    .build({
-      entryPoints: [path.join(__dirname, '../components/index.ts')],
-      bundle: true,
-      outfile: path.join(__dirname, '../dist/index.cjs'),
-      format: 'cjs',
-      minify: true,
-      watch:
-        process.env.NODE_ENV === 'development'
-          ? {
-              onRebuild(error, result) {
-                if (error) console.error('watch build failed:', error);
-                else console.log('watch build 成功:', result);
-              },
-            }
-          : false,
-      external: ['react', 'react-dom'],
-    }).then(() => {
-       console.log('building...');
-   }).catch(() => process.exit(1));
-}
-buildCjs()
 buildEsm()

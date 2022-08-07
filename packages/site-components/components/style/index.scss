@@ -1,6 +1,6 @@
-@import 'highlight.less';
-@import '../CodeBlockWrapper/style/index.less';
-@import '../Browser/style/index.less';
+@import 'highlight.scss';
+@import '../CodeBlockWrapper/style/index';
+@import '../Browser/style/index';
 
 .ac-toolbar {
   position: absolute;

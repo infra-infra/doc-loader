@@ -1,2 +1,2 @@
-import './index.less'
-import './highlight.less'
+import './index.scss'
+import './highlight.scss'
