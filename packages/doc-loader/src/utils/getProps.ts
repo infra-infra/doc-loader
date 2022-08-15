@@ -1,6 +1,7 @@
 import { withDefaultConfig } from 'react-docgen-typescript'
 import path from "path";
 import marked from '../parser/marked'
+import xss from "xss";
 function commentToMarkDown(componentInfo) {
     return componentInfo
         .map((item) => {
@@ -54,7 +55,7 @@ function getProps(context) {
         path.resolve(context, `index.tsx`)
     );
     return `<div className="markdown-body api-container">
-${marked(commentToMarkDown(componentInfo))}
+${xss(marked(commentToMarkDown(componentInfo)))}
 </div>`
 }
 export default getProps
