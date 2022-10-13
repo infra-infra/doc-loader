@@ -79,7 +79,7 @@ function loaderForArcoComponentDoc(
   }
 
   const commonImports = babelParse(`
-    import { CodeBlockWrapper, CellCode, CellDemo, CellDescription, Browser } from "@dekopon/site";
+    import { CodeBlockWrapper, CellCode, CellDemo, CellDescription } from "@oc/site";
   `).program.body;
 
   traverse(markdownAst, {

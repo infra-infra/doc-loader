@@ -110,17 +110,10 @@ export default function compileDemo(context, options, lang) {
             []
           );
 
-          const demoElement = meta.attributes.browser
-            ? jsxElement(
-                jsxOpeningElement(jsxIdentifier('Browser'), []),
-                jsxClosingElement(jsxIdentifier('Browser')),
-                [returnElement]
-              )
-            : returnElement;
           const demoCellElement = jsxElement(
             jsxOpeningElement(jsxIdentifier('CellDemo'), []),
             jsxClosingElement(jsxIdentifier('CellDemo')),
-            [demoElement]
+            [returnElement]
           );
           // 源代码块
           const children = [codePreviewBlockAst];
