@@ -3,7 +3,7 @@ export function dangerouslySetInnerHTMLToJsx(html: string) {
   return `import React from 'react';
     export default function() {
       return (
-        <div className="code-preview" dangerouslySetInnerHTML={{ __html: "<div>${html}</div>" }} />
+        <div className="code-preview" dangerouslySetInnerHTML={{ __html: "${html}" }} />
       );
     };`;
 }

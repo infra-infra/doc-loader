@@ -42,7 +42,7 @@ export default function compileDemo(context, options, lang) {
 
       const { title, description } = meta.attributes;
 
-      const markedBodyAddHeader = `<h2 class="ac-demo-title"><a tabindex="-1" href="#${title}">${linkSvg}</a>${title}</h2>${
+      const markedBodyAddHeader = `<h2 class="oc-demo-title"><a tabindex="-1" href="#${title}">${linkSvg}</a>${title}</h2>${
         description && marked(description)
       }`;
       const descriptionOriginAst = babelParse(dangerouslySetInnerHTMLToJsx(markedBodyAddHeader));
