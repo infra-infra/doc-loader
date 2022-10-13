@@ -153,9 +153,6 @@ export default function compileDemo(context, options, lang) {
           );
           // 展开全部代码按钮
           const cellDescriptionProps = [];
-          if (index === 0) {
-            cellDescriptionProps.push(jsxAttribute(jsxIdentifier('isFirst')));
-          }
           const descriptionCellElement = jsxElement(
             jsxOpeningElement(jsxIdentifier('CellDescription'), cellDescriptionProps),
             jsxClosingElement(jsxIdentifier('CellDescription')),
