@@ -1,7 +1,6 @@
 // Custom markdown loader
 import path from 'path';
 import fs from 'fs';
-import fm from 'front-matter';
 import loaderUtils from 'loader-utils';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
@@ -23,7 +22,6 @@ import {
 import marked from './parser/marked';
 import babelParse from './parser/babel';
 import compilerDemo from './compiler/demo';
-import compilerChangelog from './compiler/changelog';
 import { processReactAst } from './compiler/react';
 import { htmlToJsx, htmlToJsxWithHelmet } from './jsx';
 import parseHeaderFromMarkdown from './utils/parseHeaderFromMarkdown';
@@ -160,12 +158,6 @@ export default function (rawContent: string) {
     isObject(loaderOptions.autoHelmet) && (loaderOptions.autoHelmet as any).formatTitle
   );
 
-  // compile changelog
-  const source = fm<{ [key: string]: any }>(markdownContent);
-  const attributes = source.attributes;
-  if (attributes.changelog) {
-    return compilerChangelog(source.body, headerHtml);
-  }
   const markdownClassAttribute = jsxAttribute(
     jsxIdentifier('className'),
     stringLiteral('markdown-body')
