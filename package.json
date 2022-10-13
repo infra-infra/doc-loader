@@ -1,6 +1,6 @@
 {
   "name": "@oc/doc-loader",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "不知火组件库cli",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",

@@ -19,8 +19,9 @@ const cache = new LRU<
     touched?: boolean;
   }
 >({
-  max: 0,
-  maxAge: 1000 * 60 * 10,
+  max: 500,
+  maxSize: 5000,
+  ttl: 1000 * 60 * 10,
 });
 
 export function compileReact(code) {
@@ -81,7 +82,7 @@ export function processReactAst(contentAst) {
       });
       _path.insertBefore(removeDuplicateImports(allImports));
       _path.stop();
-      cache.reset();
+      cache.clear();
     },
   });
 }

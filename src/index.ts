@@ -58,12 +58,7 @@ function loaderForArcoComponentDoc(
   loaderOptions: ArcoMarkdownLoaderOptions
 ) {
   let ast;
-  let lang = '';
-  if (this.resourcePath) {
-    const en = this.resourcePath.match('.en-US.md') ? 'en-US' : '';
-    const zh = this.resourcePath.match('.zh-CN.md') ? 'zh-CN' : '';
-    lang = en || zh;
-  }
+  let lang = 'zh-CN';
   try {
     ast = compilerDemo(this.context, loaderOptions, lang);
     const demoPath = path.resolve(this.context, loaderOptions.demoDir || 'demo');
