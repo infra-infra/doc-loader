@@ -48,7 +48,6 @@ function loaderForArcoComponentDoc(
   let ast;
   try {
     ast = compilerDemo(this.context);
-
     const demoPath = path.resolve(this.context, "__demo__");
     const demos = fs.readdirSync(demoPath);
     // 添加依赖项，对应的demo文件改变，触发重新编译

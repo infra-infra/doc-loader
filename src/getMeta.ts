@@ -3,9 +3,8 @@ import fs from "fs";
 import fm from "front-matter";
 import prettier from "prettier";
 import { transform } from "@babel/core";
-import marked from "./parser/marked";
-import { isObject } from "./utils/is";
-import getDescriptionFromMdLexer from "./utils/getDescriptionFromMdLexer";
+// import marked from "./parser/marked";
+// import getDescriptionFromMdLexer from "./utils/getDescriptionFromMdLexer";
 
 type DemoMeta = {
   attributes: { [key: string]: any };
@@ -91,14 +90,11 @@ function getMatches(input: string): {
 }
 
 const getMetaFromMd: (string) => DemoMeta = (source) => {
-  const lang = 'zh-CN'
   const fmSource = fm<any>(source);
   const { attributes, body } = fmSource;
-  // const str = codeRegex.exec(body);
+
   const matches = getMatches(body);
-  const metaTitle = attributes.title;
-  // i18n
-  attributes.title = isObject(metaTitle) ? metaTitle[lang] : metaTitle;
+
   let originDescription;
   if (matches.js) {
     originDescription = body.replace(matches.js.origin, "");
@@ -110,9 +106,9 @@ const getMetaFromMd: (string) => DemoMeta = (source) => {
   }
 
   // i18n
-  const lexerDescription = marked.lexer(originDescription);
-  attributes.description =
-    getDescriptionFromMdLexer(lexerDescription, lang) || originDescription;
+  // const lexerDescription = marked.lexer(originDescription);
+  attributes.description = originDescription
+  //   getDescriptionFromMdLexer(lexerDescription, 'zh-CN') || originDescription;
 
   const isTsx = ["ts", "tsx", "typescript"].indexOf(matches.js.lang) > -1;
 
