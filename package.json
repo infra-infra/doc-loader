@@ -16,18 +16,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cocoplums/dekopon-cli.git"
+    "url": "git+https://github.com/oocc-run/doc-loader.git"
   },
   "keywords": [
     "cli",
     "dekopon"
   ],
-  "author": "cocoplums",
+  "author": "oocc",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cocoplums/dekopon-cli/issues"
+    "url": "https://github.com/oocc-run/doc-loader/issues"
   },
-  "homepage": "https://github.com/cocoplums/dekopon-cli#readme",
+  "homepage": "https://github.com/oocc-run/doc-loader#readme",
   "dependencies": {
     "@babel/core": "^7.19.3",
     "@babel/generator": "^7.19.5",
