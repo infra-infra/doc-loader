@@ -1,10 +1,9 @@
 // Custom markdown loader
-import path from 'path';
-import fs from 'fs';
-import loaderUtils from 'loader-utils';
-import traverse from '@babel/traverse';
-import generate from '@babel/generator';
-import { ParseResult } from '@babel/parser';
+import path from "path";
+import fs from "fs";
+import traverse from "@babel/traverse";
+import generate from "@babel/generator";
+import { ParseResult } from "@babel/parser";
 import {
   jsxAttribute,
   jsxIdentifier,
@@ -16,29 +15,19 @@ import {
   JSXElement,
   JSXIdentifier,
   JSXText,
-  JSXAttribute, ExpressionStatement,
-} from '@babel/types';
+  JSXAttribute,
+  ExpressionStatement,
+} from "@babel/types";
 
-import marked from './parser/marked';
-import babelParse from './parser/babel';
-import compilerDemo from './compiler/demo';
-import { processReactAst } from './compiler/react';
-import { htmlToJsx, htmlToJsxWithHelmet } from './jsx';
-import parseHeaderFromMarkdown from './utils/parseHeaderFromMarkdown';
-import { isObject } from './utils/is';
+import marked from "./parser/marked";
+import babelParse from "./parser/babel";
+import compilerDemo from "./compiler/demo";
+import { processReactAst } from "./compiler/react";
+import { htmlToJsx } from "./jsx";
+import parseHeaderFromMarkdown from "./utils/parseHeaderFromMarkdown";
 import getProps from "./utils/getProps";
 
-export interface ArcoMarkdownLoaderOptions {
-  preprocess?: (string) => string;
-  autoHelmet?:
-    | boolean
-    | {
-        formatTitle: (string) => string;
-      };
-  demoDir?: string;
-}
-
-const PLACEHOLDER_DEMO = 'API';
+const PLACEHOLDER_DEMO = "API";
 
 function loaderForCommonDoc(ast: ParseResult<File>, attribute: JSXAttribute) {
   traverse(ast, {
@@ -54,21 +43,20 @@ function loaderForCommonDoc(ast: ParseResult<File>, attribute: JSXAttribute) {
 function loaderForArcoComponentDoc(
   markdownAst: ParseResult<File>,
   markdownClassAttribute: JSXAttribute,
-  markdownClassAttributeApiContainer: JSXAttribute,
-  loaderOptions: ArcoMarkdownLoaderOptions
+  markdownClassAttributeApiContainer: JSXAttribute
 ) {
   let ast;
-  let lang = 'zh-CN';
   try {
-    ast = compilerDemo(this.context, loaderOptions, lang);
-    const demoPath = path.resolve(this.context, loaderOptions.demoDir || 'demo');
+    ast = compilerDemo(this.context);
+
+    const demoPath = path.resolve(this.context, "__demo__");
     const demos = fs.readdirSync(demoPath);
     // 添加依赖项，对应的demo文件改变，触发重新编译
     demos.forEach((file) => {
       this.addDependency(`${demoPath}/${file}`);
     });
   } catch (err) {
-    if (err.syscall !== 'scandir' || err.code !== 'ENOENT') {
+    if (err.syscall !== "scandir" || err.code !== "ENOENT") {
       console.error(err);
     }
   }
@@ -79,23 +67,28 @@ function loaderForArcoComponentDoc(
 
   traverse(markdownAst, {
     JSXElement: (_path) => {
-      const { value: valueOfFirstChild } = (_path.node.children[0] as JSXText) || { value: '' };
-      const { name: nameOfOpeningElement } = _path.node.openingElement.name as JSXIdentifier;
-      if (nameOfOpeningElement === 'h2' && valueOfFirstChild === PLACEHOLDER_DEMO) {
+      const { value: valueOfFirstChild } = (_path.node
+        .children[0] as JSXText) || { value: "" };
+      const { name: nameOfOpeningElement } = _path.node.openingElement
+        .name as JSXIdentifier;
+      if (
+        nameOfOpeningElement === "h2" &&
+        valueOfFirstChild === PLACEHOLDER_DEMO
+      ) {
         // 防止 markdown 样式影响组件样式，所以只给 markdown 内容添加 markdown-body 的类名
         const prevs = _path.getAllPrevSiblings();
         const nexts = _path.getAllNextSiblings();
 
         const prevSpan = jsxElement(
-          jsxOpeningElement(jsxIdentifier('span'), [markdownClassAttribute]),
-          jsxClosingElement(jsxIdentifier('span')),
+          jsxOpeningElement(jsxIdentifier("span"), [markdownClassAttribute]),
+          jsxClosingElement(jsxIdentifier("span")),
           prevs.map((prev) => prev.node as JSXElement)
         );
         const nextSpan = jsxElement(
-          jsxOpeningElement(jsxIdentifier('span'), [
+          jsxOpeningElement(jsxIdentifier("span"), [
             markdownClassAttributeApiContainer,
           ]),
-          jsxClosingElement(jsxIdentifier('span')),
+          jsxClosingElement(jsxIdentifier("span")),
           nexts.map((prev) => prev.node as JSXElement)
         );
 
@@ -109,13 +102,15 @@ function loaderForArcoComponentDoc(
         _path.insertBefore([prevSpan]);
         _path.insertAfter([nextSpan]);
 
-        const expressionStatement = babelParse('<Component />').program.body[0] as ExpressionStatement
-        const element = expressionStatement.expression
+        const expressionStatement = babelParse("<Component />").program
+          .body[0] as ExpressionStatement;
+        const element = expressionStatement.expression;
         _path.insertBefore(element);
         this.addDependency(path.resolve(this.context, `index.tsx`));
-        const propsExpressionStatement = babelParse(getProps(this.context)).program.body[0] as ExpressionStatement
-        const propsElement = propsExpressionStatement.expression
-        _path.insertAfter(propsElement)
+        const propsExpressionStatement = babelParse(getProps(this.context))
+          .program.body[0] as ExpressionStatement;
+        const propsElement = propsExpressionStatement.expression;
+        _path.insertAfter(propsElement);
         _path.stop();
       }
     },
@@ -137,43 +132,25 @@ function loaderForArcoComponentDoc(
 }
 
 export default function (rawContent: string) {
-  const loaderOptions: ArcoMarkdownLoaderOptions = loaderUtils.getOptions(this) || {};
-
-  if (typeof loaderOptions.preprocess === 'function') {
-    rawContent = loaderOptions.preprocess(rawContent);
-  }
-
-  const {
-    markdown: markdownContent,
-    headerHtml,
-    title,
-    description,
-  } = parseHeaderFromMarkdown(
-    rawContent,
-    isObject(loaderOptions.autoHelmet) && (loaderOptions.autoHelmet as any).formatTitle
-  );
-
+  const { markdown: markdownContent, headerHtml } = parseHeaderFromMarkdown(rawContent);
   const markdownClassAttribute = jsxAttribute(
-    jsxIdentifier('className'),
-    stringLiteral('markdown-body')
+    jsxIdentifier("className"),
+    stringLiteral("markdown-body")
   );
   const markdownClassAttributeApiContainer = jsxAttribute(
-    jsxIdentifier('className'),
-    stringLiteral('markdown-body api-container')
+    jsxIdentifier("className"),
+    stringLiteral("markdown-body api-container")
   );
   const markdownAst = babelParse(
-    headerHtml && loaderOptions.autoHelmet
-      ? htmlToJsxWithHelmet(`${headerHtml}${marked(markdownContent)}`, title, description)
-      : htmlToJsx(`${headerHtml}${marked(markdownContent)}`)
+    htmlToJsx(`${headerHtml}${marked(markdownContent)}`)
   );
 
-  return rawContent.indexOf(PLACEHOLDER_DEMO) === -1
-    ? loaderForCommonDoc.call(this, markdownAst, markdownClassAttribute)
-    : loaderForArcoComponentDoc.call(
+  return rawContent.includes(PLACEHOLDER_DEMO)
+    ? loaderForArcoComponentDoc.call(
         this,
         markdownAst,
         markdownClassAttribute,
-        markdownClassAttributeApiContainer,
-        loaderOptions
-      );
+        markdownClassAttributeApiContainer
+      )
+    : loaderForCommonDoc.call(this, markdownAst, markdownClassAttribute);
 }

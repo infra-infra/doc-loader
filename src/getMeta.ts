@@ -90,7 +90,8 @@ function getMatches(input: string): {
   return output;
 }
 
-const getMetaFromMd: (string, boolean) => DemoMeta = (source, lang) => {
+const getMetaFromMd: (string) => DemoMeta = (source) => {
+  const lang = 'zh-CN'
   const fmSource = fm<any>(source);
   const { attributes, body } = fmSource;
   // const str = codeRegex.exec(body);
@@ -129,17 +130,16 @@ const getMetaFromMd: (string, boolean) => DemoMeta = (source, lang) => {
   return ret;
 };
 
-export default function (context, options, lang) {
-  const demoDir = options.demoDir || "demo";
-  const files = fs.readdirSync(path.resolve(context || "", demoDir));
+export default function (context) {
+  const files = fs.readdirSync(path.resolve(context || "", "__demo__"));
 
   const metadata = files.map((file) => {
     const source = fs.readFileSync(
-      path.resolve(context, demoDir, file),
+      path.resolve(context, "__demo__", file),
       "utf8"
     );
     if (/\.md$/.test(file)) {
-      return getMetaFromMd(source, lang);
+      return getMetaFromMd(source);
     }
     return getMetaFromComment(source, /\.(tsx|ts)$/.test(file));
   });
