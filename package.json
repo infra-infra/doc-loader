@@ -1,7 +1,7 @@
 {
   "name": "@oc/doc-loader",
-  "version": "0.0.1",
-  "description": "不知火组件库cli",
+  "version": "0.0.2",
+  "description": "webpack loader for oc documentation",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
