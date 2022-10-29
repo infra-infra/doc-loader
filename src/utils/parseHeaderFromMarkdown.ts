@@ -25,7 +25,7 @@ export default function parseHeaderFromMarkdown(
   const rawHeader = getRawHeader(markdown);
   if (rawHeader) {
     markdown = markdown.replace(`\`\`\`\`\`${rawHeader}\`\`\`\`\``, '');
-    headerHtml = `<div className="ac-nav-intro">${marked(
+    headerHtml = `<div className="oc-nav-intro">${marked(
       rawHeader.replace(/(\/) (.*)/, '<span className="separator">$1</span> **$2**')
     )}</div>`;
     title = getTitle(rawHeader);
