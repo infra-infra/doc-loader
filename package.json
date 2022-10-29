@@ -1,6 +1,6 @@
 {
   "name": "@oc/doc-loader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "webpack loader for oc documentation",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
